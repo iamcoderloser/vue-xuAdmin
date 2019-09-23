@@ -12,13 +12,19 @@ import router from './router'
 import store from './vuex'
 import i18n from './i18n/i18n'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
+Vue.use(VueAxios, axios)
+
+
 //  获取角色信息，根据用户权限动态加载路由
 router.beforeEach((to, from, next) => {
-  console.log(store.getters.token)
-  // debugger
+  // console.log(store.getters.token)
+
 
   if (store.getters.token) {
     store.dispatch('setToken', store.getters.token)
@@ -30,7 +36,7 @@ router.beforeEach((to, from, next) => {
         !async function getAddRouters () {
           await store.dispatch('getInfo', store.getters.token)
           await store.dispatch('newRoutes', store.getters.info.role)
-          console.log(store.getters.addRouters)
+          // console.log(store.getters.addRouters)
           await router.addRoutes(store.getters.addRouters)
           next({path: '/index'})
         }()

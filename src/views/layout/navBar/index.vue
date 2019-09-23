@@ -28,16 +28,17 @@
         </el-header>
 
         <el-menu
-            :default-active="activeIndex2"
+            :default-active="activeIndex"
             class="el-menu-demo"
             mode="horizontal"
             @select="handleSelect"
             background-color="#333"
             text-color="#fff"
             active-text-color="#ffd04b">
-            <el-menu-item index="1">处理中心</el-menu-item>
-            <el-menu-item index="2">我的工作台</el-menu-item>
-            <el-menu-item index="3"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+            <template   v-for="(menuItem , index) in menuItems" >
+              <el-menu-item :index="(menuItemIndex++)+''" v-if="!menuItem.hidden" :key="index">{{ $t(`routeNmae.${menuItem.name}`)}}</el-menu-item>
+            </template>
+            
         </el-menu>
     </div>
 </template>
@@ -52,10 +53,21 @@
     data () {
       return {
         isfullScreen: true,
-        avatar: './static/images/icon.jpg'
+        avatar: './static/images/icon.jpg',  
+        activeIndex:'1',
+        menuItemIndex:1
+      }
+    },
+    computed:{
+      menuItems() {
+        var routers = this.$store.getters.routers
+        debugger
+        return routers
       }
     },
     methods: {
+      select(){},
+      handleSelect() {},
       collapse () {
         this.$store.dispatch('collapse')
       },
